@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnSphere - AI-Powered Machine Learning Education</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🧠 LearnSphere</h1>
+                <p>AI-Powered ML Education</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h2>Master Machine Learning with AI-Powered Personalization</h2>
+            <p>Learn ML concepts tailored to your learning style with text, code, visuals, and audio</p>
+            <a href="/dashboard" class="btn btn-primary btn-large">Start Learning</a>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Our Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Concept Explanations</h3>
+                    <p>Clear, detailed explanations of ML concepts adapted to your learning style</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Code Generation</h3>
+                    <p>Real, working code examples with detailed comments and explanations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Visual Learning</h3>
+                    <p>Interactive diagrams and visual representations of complex concepts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Audio Lessons</h3>
+                    <p>Listen to engaging explanations and reinforce your learning</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Personalized Path</h3>
+                    <p>Content adapts to your learning style, pace, and skill level</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>Quizzes & Tests</h3>
+                    <p>Assess your knowledge with AI-generated quizzes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="learning-styles">
+        <div class="container">
+            <h2>Choose Your Learning Style</h2>
+            <div class="styles-grid">
+                <div class="style-card">
+                    <h3>👁️ Visual</h3>
+                    <p>Learn through diagrams, charts, and visual representations</p>
+                </div>
+                <div class="style-card">
+                    <h3>👂 Auditory</h3>
+                    <p>Learn through listening to explanations and discussions</p>
+                </div>
+                <div class="style-card">
+                    <h3>📖 Reading</h3>
+                    <p>Learn through detailed text and written explanations</p>
+                </div>
+                <div class="style-card">
+                    <h3>🤚 Kinesthetic</h3>
+                    <p>Learn through hands-on practice and interactive examples</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Master Machine Learning?</h2>
+            <p>Start your personalized learning journey today</p>
+            <a href="/dashboard" class="btn btn-primary btn-large">Enter Dashboard</a>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <p>&copy; 2024 LearnSphere - AI-Powered Machine Learning Education</p>
+            <p>Powered by Google Gemini API | Flask | Python</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

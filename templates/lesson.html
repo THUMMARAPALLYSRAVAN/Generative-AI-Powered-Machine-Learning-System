@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic }} - LearnSphere</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🧠 LearnSphere</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="#" onclick="goBack()">Back</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container lesson-container">
+        <header class="lesson-header">
+            <h1>{{ topic }}</h1>
+            <p>Machine Learning - {{ profile.level|capitalize }} Level</p>
+            <div class="breadcrumb">
+                <a href="/">Home</a> > <a href="/dashboard">Dashboard</a> > {{ topic }}
+            </div>
+        </header>
+
+        <main class="lesson-content">
+            <div class="content-tabs">
+                <div class="tabs-navigation">
+                    <button class="tab-button active" data-tab="overview">Overview</button>
+                    <button class="tab-button" data-tab="explanation">Explanation</button>
+                    <button class="tab-button" data-tab="code">Code</button>
+                    <button class="tab-button" data-tab="visual">Visual</button>
+                    <button class="tab-button" data-tab="audio">Audio</button>
+                    <button class="tab-button" data-tab="quiz">Quiz</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-pane active">
+                    <h2>Overview</h2>
+                    <div class="lesson-info">
+                        <div class="info-box">
+                            <h3>Your Learning Profile</h3>
+                            <ul>
+                                <li><strong>Learning Style:</strong> {{ profile.learning_style|capitalize }}</li>
+                                <li><strong>Skill Level:</strong> {{ profile.level|capitalize }}</li>
+                                <li><strong>Content Type:</strong> Personalized for your needs</li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h3>In This Lesson</h3>
+                            <ul>
+                                <li>📖 Detailed concept explanation</li>
+                                <li>💻 Practical code examples</li>
+                                <li>🎨 Visual representations</li>
+                                <li>🎧 Audio explanations</li>
+                                <li>📝 Knowledge assessment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explanation Tab -->
+                <div id="explanation" class="tab-pane">
+                    <h2>{{ topic }} - Explanation</h2>
+                    <div id="explanationContent" class="content-box loading">
+                        <p>Loading explanation...</p>
+                    </div>
+                </div>
+
+                <!-- Code Tab -->
+                <div id="code" class="tab-pane">
+                    <h2>{{ topic }} - Code Examples</h2>
+                    <div id="codeContent" class="content-box loading">
+                        <p>Loading code examples...</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="copyLessonCode()" style="margin-top: 10px;">📋 Copy Code</button>
+                </div>
+
+                <!-- Visual Tab -->
+                <div id="visual" class="tab-pane">
+                    <h2>{{ topic }} - Visual Guide</h2>
+                    <div id="visualContent" class="content-box loading">
+                        <p>Loading visual guide...</p>
+                    </div>
+                </div>
+
+                <!-- Audio Tab -->
+                <div id="audio" class="tab-pane">
+                    <h2>{{ topic }} - Audio Lesson</h2>
+                    <div class="audio-player">
+                        <button class="btn btn-primary" onclick="speakLessonAudio()">🔊 Play Audio Lesson</button>
+                        <span id="audioStatus"></span>
+                    </div>
+                    <div id="audioContent" class="content-box loading">
+                        <p>Loading audio script...</p>
+                    </div>
+                </div>
+
+                <!-- Quiz Tab -->
+                <div id="quiz" class="tab-pane">
+                    <h2>{{ topic }} - Knowledge Check</h2>
+                    <div id="quizContent" class="content-box loading">
+                        <p>Loading quiz...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="lesson-sidebar">
+            <div class="sidebar-box">
+                <h3>Lesson Controls</h3>
+                <button class="btn btn-success btn-block" onclick="markLessonCompleted('{{ topic }}')">✅ Mark as Complete</button>
+                <button class="btn btn-secondary btn-block" onclick="goBack()">← Back to Dashboard</button>
+            </div>
+
+            <div class="sidebar-box">
+                <h3>Tips</h3>
+                <ul class="tips-list">
+                    <li>Take your time understanding each concept</li>
+                    <li>Try the code examples yourself</li>
+                    <li>Use the visual guides to understand better</li>
+                    <li>Test your knowledge with the quiz</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-box">
+                <h3>Related Topics</h3>
+                <div class="related-topics">
+                    <p><a href="/lesson/Linear%20Regression">Linear Regression</a></p>
+                    <p><a href="/lesson/Supervised%20Learning">Supervised Learning</a></p>
+                    <p><a href="/lesson/Neural%20Networks">Neural Networks</a></p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 LearnSphere - AI-Powered Machine Learning Education</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Load lesson content on page load
+        const topic = "{{ topic }}";
+        const learningStyle = "{{ profile.learning_style }}";
+        const level = "{{ profile.level }}";
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLessonContent(topic);
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                switchLessonTab(tabName);
+            });
+        });
+
+        function switchLessonTab(tabName) {
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function loadLessonContent(topic) {
+            // Load explanation
+            fetch('/api/explain', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ concept: topic })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('explanationContent').innerHTML = `<pre>${data.explanation}</pre>`;
+                }
+            });
+
+            // Load code
+            fetch('/api/code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ concept: topic, language: 'python' })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('codeContent').innerHTML = `<pre><code>${data.code}</code></pre>`;
+                }
+            });
+
+            // Load visual
+            fetch('/api/visual', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ concept: topic })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('visualContent').innerHTML = `<pre>${data.visual_guide}</pre>`;
+                }
+            });
+
+            // Load audio
+            fetch('/api/audio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ concept: topic })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('audioContent').innerHTML = `<pre>${data.audio_script}</pre>`;
+                }
+            });
+
+            // Load quiz
+            fetch('/api/quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ topic: topic })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success && data.quiz) {
+                    displayQuiz(data.quiz);
+                }
+            });
+        }
+
+        function displayQuiz(quiz) {
+            let quizHtml = '';
+            quiz.forEach((q, idx) => {
+                quizHtml += `
+                    <div class="quiz-question">
+                        <h4>Q${idx + 1}: ${q.question}</h4>
+                        <div class="quiz-options">
+                `;
+                q.options.forEach((opt, optIdx) => {
+                    quizHtml += `
+                        <label class="quiz-option">
+                            <input type="radio" name="q${idx}" value="${opt}" class="quiz-radio">
+                            ${opt}
+                        </label>
+                    `;
+                });
+                quizHtml += `
+                        </div>
+                        <p class="quiz-explanation" id="exp${idx}" style="display: none;">✓ ${q.explanation}</p>
+                    </div>
+                `;
+            });
+            quizHtml += '<button class="btn btn-success" onclick="checkQuizAnswers()">Submit Answers</button>';
+            document.getElementById('quizContent').innerHTML = quizHtml;
+        }
+
+        function checkQuizAnswers() {
+            alert('Quiz submitted! Review your answers above.');
+        }
+
+        function copyLessonCode() {
+            const code = document.querySelector('#code code');
+            if (code) {
+                navigator.clipboard.writeText(code.textContent).then(() => {
+                    alert('Code copied to clipboard!');
+                });
+            }
+        }
+
+        function speakLessonAudio() {
+            const text = document.getElementById('audioContent').textContent;
+            if ('speechSynthesis' in window && text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+                document.getElementById('audioStatus').textContent = '🔊 Playing...';
+            }
+        }
+
+        function markLessonCompleted(lessonId) {
+            fetch('/api/complete-lesson', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ lesson_id: lessonId })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Lesson marked as completed! Great job!');
+                }
+            });
+        }
+
+        function goBack() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LearnSphere</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🧠 LearnSphere</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><span class="user-id">User: <strong id="userId"></strong></span></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <aside class="sidebar">
+            <h3>Profile Settings</h3>
+            
+            <div class="setting-group">
+                <label>Learning Style</label>
+                <select id="learningStyle" class="setting-select">
+                    <option value="visual">👁️ Visual</option>
+                    <option value="auditory">👂 Auditory</option>
+                    <option value="reading">📖 Reading</option>
+                    <option value="kinesthetic">🤚 Kinesthetic</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Skill Level</label>
+                <select id="skillLevel" class="setting-select">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Content Preferences</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="codeExamples" checked>
+                        Code Examples
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="visualizations" checked>
+                        Visualizations
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="audioLessons">
+                        Audio Lessons
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="detailedExplanations" checked>
+                        Detailed Explanations
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn btn-success" onclick="saveProfile()">Save Profile</button>
+
+            <div class="stats">
+                <h3>Your Progress</h3>
+                <div class="stat-item">
+                    <span>Completed Lessons:</span>
+                    <strong id="completedCount">0</strong>
+                </div>
+                <div class="stat-item">
+                    <span>Current Level:</span>
+                    <strong id="currentLevel">Beginner</strong>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <h2>Machine Learning Topics</h2>
+            
+            <div class="topics-grid">
+                {% for topic in topics %}
+                <div class="topic-card" onclick="selectTopic('{{ topic }}')">
+                    <div class="topic-header">
+                        <h3>{{ topic }}</h3>
+                    </div>
+                    <p>Click to start learning</p>
+                    <div class="topic-meta">
+                        <span class="difficulty">📊</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Learning Content -->
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            
+            <div class="modal-header">
+                <h2 id="modalTitle">Learning Content</h2>
+                <div class="modal-tabs">
+                    <button class="tab-btn active" onclick="switchTab('explanation')">📖 Explanation</button>
+                    <button class="tab-btn" onclick="switchTab('code')">💻 Code</button>
+                    <button class="tab-btn" onclick="switchTab('visual')">🎨 Visual</button>
+                    <button class="tab-btn" onclick="switchTab('audio')">🎧 Audio</button>
+                    <button class="tab-btn" onclick="switchTab('quiz')">📝 Quiz</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Explanation Tab -->
+                <div id="explanation" class="tab-content active">
+                    <h3>Concept Explanation</h3>
+                    <div id="explanationContent" class="loading">Loading explanation...</div>
+                </div>
+
+                <!-- Code Tab -->
+                <div id="code" class="tab-content">
+                    <h3>Code Example</h3>
+                    <div id="codeContent" class="loading">Loading code example...</div>
+                    <button class="btn btn-secondary" onclick="copyCode()">Copy Code</button>
+                </div>
+
+                <!-- Visual Tab -->
+                <div id="visual" class="tab-content">
+                    <h3>Visual Guide</h3>
+                    <div id="visualContent" class="loading">Loading visual guide...</div>
+                </div>
+
+                <!-- Audio Tab -->
+                <div id="audio" class="tab-content">
+                    <h3>Audio Lesson Script</h3>
+                    <div id="audioContent" class="loading">Loading audio script...</div>
+                    <button class="btn btn-secondary" onclick="speakAudio()">🔊 Read Aloud</button>
+                </div>
+
+                <!-- Quiz Tab -->
+                <div id="quiz" class="tab-content">
+                    <h3>Knowledge Check</h3>
+                    <div id="quizContent" class="loading">Loading quiz...</div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="markLessonComplete()">Mark as Completed</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/personalization.js') }}"></script>
+</body>
+</html>
